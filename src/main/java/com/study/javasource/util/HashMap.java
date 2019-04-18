@@ -17,6 +17,12 @@ public class HashMap<K,V> implements Map<K,V>, Cloneable, Serializable {
      */
     static final int DEFAULT_INITIAL_CAPACITY = 1 << 4;
 
+    /**
+     * 最大容量，作为容器的最大值，可以通过构造方法传入。
+     * 必须为2的指数。初始值为 1<<30。
+     */
+    static final int MAXIMUM_CAPACITY = 1 << 30;
+
     public int size() {
         return 0;
     }
