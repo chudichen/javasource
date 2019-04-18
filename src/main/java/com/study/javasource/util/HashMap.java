@@ -6,6 +6,8 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
+ *
+ *
  * @author Michael.Chu
  * @date 2019-04-15 10:46
  */
@@ -92,6 +94,8 @@ public class HashMap<K,V> implements Map<K,V>, Cloneable, Serializable {
             }
             return false;
         }
+
+        /* ---------------- 静态工具类 -------------- */
     }
 
     @Override
