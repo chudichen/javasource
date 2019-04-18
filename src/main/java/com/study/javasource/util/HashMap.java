@@ -6,12 +6,10 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- *
- *
  * @author Michael.Chu
  * @date 2019-04-15 10:46
  */
-public class HashMap<K,V> implements Map<K,V>, Cloneable, Serializable {
+public class HashMap<K, V> implements Map<K, V>, Cloneable, Serializable {
 
     private static final long serialVersionUID = 8497004991625828588L;
 
@@ -54,11 +52,11 @@ public class HashMap<K,V> implements Map<K,V>, Cloneable, Serializable {
     /**
      * 在Entry（键值对）中的基础hash节点。
      */
-    static class Node<K,V> implements Map.Entry {
+    static class Node<K, V> implements Map.Entry {
         final int hash;
         final K key;
         V value;
-        Node<K,V> next;
+        Node<K, V> next;
 
         public Node(int hash, K key, V value, Node<K, V> next) {
             this.hash = hash;
@@ -68,17 +66,30 @@ public class HashMap<K,V> implements Map<K,V>, Cloneable, Serializable {
         }
 
         @Override
-        public final K getKey()      { return key; }
+        public final K getKey() {
+            return key;
+        }
+
         @Override
-        public final V getValue()    { return value; }
+        public final V getValue() {
+            return value;
+        }
+
         @Override
-        public final String toString() { return key + "=" + value; }
+        public final String toString() {
+            return key + "=" + value;
+        }
+
+        @Override
+        public final int hashCode() {
+            return Objects.hashCode(key) ^ Objects.hashCode(value);
+        }
 
         @Override
         @SuppressWarnings("unchecked")
         public V setValue(Object newValue) {
             V oldValue = value;
-            value = (V)newValue;
+            value = (V) newValue;
             return oldValue;
         }
 
@@ -98,9 +109,62 @@ public class HashMap<K,V> implements Map<K,V>, Cloneable, Serializable {
         /* ---------------- 静态工具类 -------------- */
     }
 
+    transient Node<K, V>[] table;
+
+    transient Set<Map.Entry<K, V>> entrySet;
+
+    transient int size;
+
+    /**
+     * 当前HashMap对象结构被修改的次数
+     */
+    transient int modCount;
+
+    /**
+     * 下一次要扩容{@code resize}操作的阈值(capacity * loadFactor)。
+     *
+     * @serial
+     */
+    int threshold;
+
+    /**
+     * 当前hash表的负载因子
+     *
+     * @serial
+     */
+    final float loadFactor;
+
+    public HashMap(int initialCapacity, float loadFactor) {
+        if (initialCapacity < 0) {
+            throw new IllegalArgumentException("Illegal initial capacity:" +
+                    initialCapacity);
+        }
+        if (initialCapacity > MAXIMUM_CAPACITY) {
+            initialCapacity = MAXIMUM_CAPACITY;
+        }
+        if (loadFactor <= 0 || Float.isNaN(loadFactor)) {
+            throw new IllegalArgumentException("Illegal load factor:" +
+                    loadFactor);
+        }
+        this.loadFactor = loadFactor;
+        this.threshold = tableSizeFor(initialCapacity);
+    }
+
+    /**
+     * 根据传入数字返回2的指数大小的容量值
+     *
+     * @param cap 传入参数
+     * @return 返回容量值
+     */
+    static final int tableSizeFor(int cap) {
+        int n = -1 >>> Integer.numberOfLeadingZeros(cap - 1);
+        return (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
+    }
+
     @Override
+
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
