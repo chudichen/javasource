@@ -1,5 +1,8 @@
 package com.study.javasource.util;
 
+import java.util.Collection;
+import java.util.Set;
+
 /**
  * @author Michael.Chu
  * @date 2019-04-15 10:45
@@ -66,4 +69,49 @@ public interface Map<K,V> {
 
     // 批量操作
 
+    /**
+     * 将所有m中的元素放入当前集合中
+     *
+     * @param m 参数
+     */
+    void putAll(Map<? extends K, ? extends V> m);
+
+    /**
+     * 清空集合当中的所有元素
+     */
+    void clear();
+
+    /**
+     * 返回当前集合当中的所有key
+     *
+     * @return 返回当前集合当中的所有key
+     */
+    Set<K> keySet();
+
+    /**
+     * 返回集合当中的所有value
+     */
+    Collection<V> values();
+
+    /**
+     * 返回集合当中所有的键值对
+     *
+     * @return
+     */
+    Set<Map.Entry<K, V>> entrySet();
+
+    interface Entry<K, V> {
+        /**
+         * 返回key
+         *
+         * @return key
+         */
+        K getKey();
+
+        /**
+         * 返回value
+         * @return value
+         */
+        V getValue();
+    }
 }
