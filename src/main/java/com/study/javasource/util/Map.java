@@ -122,5 +122,38 @@ public interface Map<K,V> {
          *                               可以抛出这个异常。
          */
         V getValue();
+
+        /**
+         * 只用指定的值来替换entry中的value值（可选项），（通过map来实现），
+         * 如果当前entry已经被删除了就会返回undefined（通过iterator的
+         * {@code remove}来实现）。
+         *
+         * @param value 要存入这个entry中的新值
+         * @return 这个entry中的旧值
+         * @throws UnsupportedOperationException 如果{@code put}不被
+         *         当前Map所支持。
+         * @throws ClassCastException
+         * @throws NullPointerException
+         * @throws IllegalArgumentException
+         * @throws IllegalStateException
+         */
+        V setValue(V value);
+
+        /**
+         * 重写Object的{@code equals}方法
+         *
+         * @param o
+         * @return
+         */
+        @Override
+        boolean equals(Object o);
+
+        /**
+         * 重写Object的{@code hashCode}方法
+         *
+         * @return
+         */
+        @Override
+        int hashCode();
     }
 }

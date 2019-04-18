@@ -2,6 +2,7 @@ package com.study.javasource.util;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -30,50 +31,125 @@ public class HashMap<K,V> implements Map<K,V>, Cloneable, Serializable {
      */
     static final float DEFAULT_LOAD_FACTOR = 0.75f;
 
+    /**
+     * 链表转化为红黑树的阈值，达到这个值的时候，会将链表转化为
+     * 一颗红黑树，这个值应该必须大于2，最好是大于8的。
+     */
+    static final int TREEIFY_THRESHHOLD = 8;
+
+    /**
+     * 红黑树退化为链表的阈值，当达到这个值的时候，红黑树将会
+     * 退化为链表。这个值要比树化的值小，最好小于6。
+     */
+    static final int UNTREEIFY_THRESHOLD = 6;
+
+    /**
+     * 容器树化之后的最小容量（初始值）。否则太多节点在一棵树上，
+     * 就会进行resize操作。最好是 4 * 树化阈值。
+     */
+    static final int MIN_TREEIFY_CAPACITY = 64;
+
+    /**
+     * 在Entry（键值对）中的基础hash节点。
+     */
+    static class Node<K,V> implements Map.Entry {
+        final int hash;
+        final K key;
+        V value;
+        Node<K,V> next;
+
+        public Node(int hash, K key, V value, Node<K, V> next) {
+            this.hash = hash;
+            this.key = key;
+            this.value = value;
+            this.next = next;
+        }
+
+        @Override
+        public final K getKey()      { return key; }
+        @Override
+        public final V getValue()    { return value; }
+        @Override
+        public final String toString() { return key + "=" + value; }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public V setValue(Object newValue) {
+            V oldValue = value;
+            value = (V)newValue;
+            return oldValue;
+        }
+
+        @Override
+        public final boolean equals(Object o) {
+            if (o == this) {
+                return true;
+            }
+            if (o instanceof Map.Entry) {
+                Map.Entry<?, ?> e = (Map.Entry<?, ?>) o;
+                return Objects.equals(key, e.getKey()) &&
+                        Objects.equals(value, e.getValue());
+            }
+            return false;
+        }
+    }
+
+    @Override
     public int size() {
         return 0;
     }
 
+    @Override
     public boolean isEmpty() {
         return false;
     }
 
+    @Override
     public boolean containsKey(Object key) {
         return false;
     }
 
+    @Override
     public boolean containsValue(Object value) {
         return false;
     }
 
+    @Override
     public V get(Object key) {
         return null;
     }
 
+    @Override
     public V put(K key, V value) {
         return null;
     }
 
+    @Override
     public V remove(K key) {
         return null;
     }
 
+    @Override
     public void putAll(Map<? extends K, ? extends V> m) {
 
     }
 
+    @Override
     public void clear() {
 
     }
 
+    @Override
     public Set<K> keySet() {
         return null;
     }
 
+    @Override
     public Collection<V> values() {
         return null;
     }
 
+    @Override
     public Set<Entry<K, V>> entrySet() {
         return null;
     }
