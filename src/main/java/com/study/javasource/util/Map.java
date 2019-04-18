@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.Set;
 
 /**
+ * 用于存储键值对的对象(key -> value)。Map集合中不能包含两个一样的key，
+ * 而且每个key只能有一个value。
+ *
  * @author Michael.Chu
  * @date 2019-04-15 10:45
  */
@@ -109,8 +112,14 @@ public interface Map<K,V> {
         K getKey();
 
         /**
-         * 返回value
-         * @return value
+         * 返回在entry中所对应的value，如果这个entry已经从集合中删除了
+         * (通过迭代器iterator的{@code remove}方法删除),返回结果将会是
+         * undefined.
+         *
+         * @return 返回这个entry中的value
+         * @throws IllegalStateException 建议实现这个异常，但是不是强制要求。
+         *                               在调用这个方法时，目标entry被删除，
+         *                               可以抛出这个异常。
          */
         V getValue();
     }
