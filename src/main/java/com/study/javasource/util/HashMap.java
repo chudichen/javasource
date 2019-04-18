@@ -23,6 +23,13 @@ public class HashMap<K,V> implements Map<K,V>, Cloneable, Serializable {
      */
     static final int MAXIMUM_CAPACITY = 1 << 30;
 
+    /**
+     * 扩容因子，如果构造器没有指定，则默认是0.75。
+     * 当容器的容量达到，当前容量（默认16） * 负载因子（默认0.75）
+     * 的时候，容器将进行扩容。
+     */
+    static final float DEFAULT_LOAD_FACTOR = 0.75f;
+
     public int size() {
         return 0;
     }
