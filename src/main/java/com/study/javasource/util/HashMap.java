@@ -9,7 +9,7 @@ import java.util.Set;
  *
  * 学习编写HashMap实现，向前辈们致敬
  *
- * @author Michael.Chu
+ * @author Michael Chu
  * @date 2019-04-15 10:46
  */
 public class HashMap<K, V> implements Map<K, V>, Cloneable, Serializable {

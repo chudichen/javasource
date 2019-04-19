@@ -10,7 +10,7 @@ import java.util.Set;
  * 用于存储键值对的对象(key -> value)。Map集合中不能包含两个一样的key，
  * 而且每个key只能有一个value。
  *
- * @author Michael.Chu
+ * @author Michael Chu
  * @date 2019-04-15 10:45
  */
 public interface Map<K,V> {
