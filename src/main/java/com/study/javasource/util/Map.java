@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 
 /**
  * 用于存储键值对的对象(key -> value)。Map集合中不能包含两个一样的key，
@@ -226,4 +228,89 @@ public interface Map<K,V> {
      */
     @Override
     boolean equals(Object o);
+
+    /**
+     * 返回这个map的hashCode值。这个hash值被定义为所有entry{@code entrySet()}
+     * 的hashcode的总合。这样使得如果{@code m1.equals(m2)}成立，则
+     * {@code m1.hashcode()==m2.hashcode()}也成立。
+     *
+     * @return 返回这个map的hashcode
+     * @see Entry#hashCode()
+     * @see Object#equals(Object)
+     * @see #equals(Object)
+     */
+    @Override
+    int hashCode();
+
+    // 默认方法
+
+    /**
+     * 返回key所对应的值，如果没有匹配到则返回
+     * {@code defaultValue}
+     *
+     * @implSpec
+     * 默认的实现不保证现成安全，或者原子操作。
+     * 现成安全的实现类要自己重写这个方法，并且使用
+     * 自己维护的现成安全的属性。
+     *
+     * @param key 需要查找的key
+     * @param defaultValue 如果没有查找到要返回的默认值
+     * @return key所对应的value，如果没有找到则返回{@code defaultValue}
+     * @throws ClassCastException 如果key不能转换成map种的key类型
+     * @throws NullPointerException 如果key为null，而这个map不允许有null的key
+     */
+    default V getOrDefault(Object key, V defaultValue) {
+        V v;
+        return (((v = get(key)) != null) || containsKey(key))
+                ? v
+                : defaultValue;
+    }
+
+    /**
+     * 返回entry流，直到所有的entry都被处理了，或者抛出了异常。
+     * 并且会按照iterator相同的顺序进行遍历（如果指定了迭代顺序的话）。
+     * 异常会抛给调用者。
+     *
+     * @implSpec
+     * 默认的实现方法等价于，{@code map}:
+     * <pre>
+     *     {code
+     *         for (Map.Entry<K, V> entry : map.entrySet())
+     *             action.accept(entry.getKey(), entry.getValue())
+     *     }
+     * </pre>
+     *
+     * 默认的实现不保证现成安全，或者原子操作。
+     * 现成安全的实现类要自己重写这个方法，并且使用
+     * 自己维护的现成安全的属性。
+     *
+     * @param action 表现为要执行遍历的entry
+     * @throws NullPointerException 如果指定的action为null
+     * @throws ConcurrentModificationException 在遍历时map结构发生变化
+     * @since 1.8
+     */
+    default void forEach(BiConsumer<? super K, ? super V> action) {
+        Objects.requireNonNull(action);
+        for (Map.Entry<K, V> entry : entrySet()) {
+            K k;
+            V v;
+            try {
+                k = entry.getKey();
+                v = entry.getValue();
+            } catch (IllegalStateException ise) {
+                // 通常来讲这时表示，当前entry已经不属于这个map
+                throw new ConcurrentModificationException();
+            }
+            action.accept(k, v);
+        }
+    }
+
+    /**
+     *
+     * @param function
+     */
+    default void replaceAll(BiFunction<? super K, ? super V, ? extends V> function) {
+        Objects.requireNonNull(function);
+
+    }
 }
